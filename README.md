@@ -21,3 +21,22 @@ To reproduce the analysis:
 1. Clone this repository.
 2. Run the scripts in the `analysis/` folder.
 3. View the results in the `figures/` and `report/` folders.
+
+descriptive_analysis.R: Script for calculating mean, median, mode, and standard deviation.
+regression_analysis.R: Script for running the multiple regression analysis.
+correlation_analysis.R: Script for calculating Pearson correlation coefficients.
+
+
+# Report: Determinants of Physician Satisfaction
+## Introduction
+The determinants of physician satisfaction, including salary, workload, lifestyle control, and risk of infection, are the focus of this study.
+## Methodology
+Multiple regression analysis was employed to contrast these factors with overall satisfaction.
+## Results
+- Workload manageability was the strongest predictor (r = 0.8).
+- Salary and lifestyle control were also significant.
+- Risk of infection and work hours had adverse effects on satisfaction.
+## Discussion
+The results indicate that enhancing workload manageability and providing competitive compensation can increase physician satisfaction.
+## Conclusion
+This research emphasizes the need to address both financial and non-financial aspects to enhance physician well-being.
