@@ -25,7 +25,7 @@ The current research investigates the predictors of physician satisfaction acros
 # Report:
 Determinants of Physician Satisfaction
 # Introduction
-The determinants of physician satisfaction, including salary, workload, lifestyle control, and risk of infection, are the focus of this study.
+This study investigates the determinants of physician satisfaction among various medical specialties in the United States. Despite the high income and respect of the medical profession, most physicians report dissatisfaction with their jobs. This research aims to determine the factors that most influence physician satisfaction, including compensation, workload, autonomy in lifestyle, risk of infection, and working time
 # Methodology
 Multiple regression analysis was employed to contrast these factors with overall satisfaction.
 # Results
