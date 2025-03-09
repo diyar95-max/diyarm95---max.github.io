@@ -41,6 +41,7 @@ Multiple regression analysis was employed to contrast these factors with overall
 
 .Compensation, work schedule, education, and workload accessibility are significant .​
 .There is no significant multicollinearity in the model​
+![Medical doctor satisfaction](https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147681571/images/635a1a-6731-4cec-76c0-2b843ece5b10_7c3411aa-cfa8-411d-9282-09ef27966b1b.jpg)
 # References
 Jena, A. B., Olenski, A. R., & Blumenthal, D. M. (2016). Sex differences in physician salary in US public medical schools. JAMA internal medicine, 176(9), 1294-1304. 
 Calwell, H. G. (1942). Working for a Salary. British Medical Journal, 2(4267), 464. 
