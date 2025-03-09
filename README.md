@@ -1,7 +1,7 @@
 # Exploring-the-Determinants-of-Physician-Satisfaction
 A study on the determinants of physician satisfaction across medical specialties
 # Title: "Determinants of Physician Satisfaction"
-
+![Medical doctor satisfaction](https://nccusa.edu/wp-content/uploads/2024/12/Medical-Administrative-Assistant-Salary-In-California-2025.jpg)
 # Abstract: 
 The current research investigates the predictors of physician satisfaction across different specialties, such as income per annum, workload manageability, control over lifestyle, and risk of infection. Multiple regression analysis was employed to explain 81% of the variance in satisfaction, with the most predictive being manageability of workload.
 # Objectives: 
