@@ -17,6 +17,7 @@ The current research investigates the predictors of physician satisfaction acros
 - Workload manageability has the greatest correlation with satisfaction (r = 0.8).
 - Salary and lifestyle control also play a large role.
 - Infection risk and work hours negatively affect satisfaction.
+![Medical doctor satisfaction](https://cardiovascularbusiness.com/sites/default/files/styles/top_stories/public/2023-12/microsoftteams-image_55.png.webp?itok=V5V0iV4a)
 # Repository Structure: 
 - `data/`: Contains raw and cleaned datasets.
 - `analysis/`: Scripts for descriptive, regression, and correlation analysis.
