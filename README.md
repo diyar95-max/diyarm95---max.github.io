@@ -45,9 +45,14 @@ Multiple regression analysis was employed to contrast these factors with overall
 
 -There is no significant multicollinearity in the model​
 ![Medical doctor satisfaction](https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147681571/images/635a1a-6731-4cec-76c0-2b843ece5b10_7c3411aa-cfa8-411d-9282-09ef27966b1b.jpg)
+
 # References
 Jena, A. B., Olenski, A. R., & Blumenthal, D. M. (2016). Sex differences in physician salary in US public medical schools. JAMA internal medicine, 176(9), 1294-1304. 
+
 Calwell, H. G. (1942). Working for a Salary. British Medical Journal, 2(4267), 464. 
+
 Gosden, T., Pedersen, L., & Torgerson, D. (1999). How should we pay doctors? A systematic review of salary payments and their effect on doctor behaviour. Qjm, 92(1), 47-55. 
+
 Joyce, C. M., Schurer, S., Scott, A., Humphreys, J., & Kalb, G. (2011). Australian doctors’ satisfaction with their work: results from the MABEL longitudinal survey of doctors. Medical Journal of Australia, 194(1), 30-33. 
+
 Konrad, T. R. (2015). Measures, methods, and models of doctor satisfaction: future research challenges. Professions and Professionalism, 5(1). 
