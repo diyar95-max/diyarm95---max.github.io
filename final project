@@ -1,3 +1,126 @@
+
+# Climate Change Impact on Crop Yield - Machine Learning Analysis
+
+This project explores the **impact of climate change on agricultural crop yield** using varied machine learning models and unsupervised clustering operations. It will make predictions of crop yield and identify vulnerable crop areas using clustering algorithms, thereby facilitating data-driven climate adaptation.
+    
+---
+
+## Project Structure
+
+- **Data Upload & Cleaning**
+  Handles file upload, replaces missing values, removes outliers using IQR method, and drops duplicates.
+
+- **Exploratory Data Analysis (EDA)**
+  Plots feature distributions, boxplots, and correlations.
+
+- **Preprocessing**
+  One-hot encodes categorical variables and scales features with `StandardScaler`.
+
+- **Model Training & Evaluation**
+  Trains and compares four models:
+  - Linear Regression
+  - Random Forest
+  - LightGBM
+  - XGBoost
+  Evaluates performance with **R² score** and **RMSE**.
+
+- **Best Model Selection & Visualization**
+Displays best model's actual vs predicted values.
+
+- **Clustering Analysis**
+  Compares and utilizes:
+  - K-Means (with elbow method)
+  - DBSCAN
+  - Agglomerative Clustering
+  Compared by means of **Silhouette Score**.
+---
+
+## How to Run
+
+1. **Environment**: This project is built to run on [Google Colab](https://colab.research.google.com/). You can also run locally if your environment has the required libraries installed.
+
+2. **Upload the Dataset**  
+   When prompted, upload your CSV file in the format used (includes columns like `Crop_Yield_MT_per_HA`, `Average_Temperature_C`, `CO2_Emissions_MT`, etc.).
+
+3. **Run All Cells**  
+   From top to bottom, each cell processes the data, trains models, and performs clustering.
+
+---
+
+##  Required Libraries
+
+\`\`\`bash
+pip install pandas numpy matplotlib seaborn scikit-learn xgboost lightgbm yellowbrick
+\`\`\`
+
+---
+
+##  Models Used
+
+| Model              | Purpose              | Notes                                  |
+|-------------------|----------------------|----------------------------------------|
+| Linear Regression | Baseline model       | Assumes linearity                      |
+| Random Forest     | Ensemble regression  | Handles non-linearity well             |
+| LightGBM          | Boosted trees        | Fast and efficient                     |
+| XGBoost           | Advanced boosting    | Good performance with fewer parameters |
+
+---
+
+##  Key Features Used
+
+- **Climate Factors**: Average temperature, precipitation, CO₂ emissions  
+- **Agricultural Inputs**: Irrigation access, fertilizer, and pesticide use  
+- **Soil & Regional Attributes**: Soil health index, crop type, region
+
+---
+
+##  Target Variable
+
+- `Crop_Yield_MT_per_HA` – Crop yield in metric tons per hectare (continuous variable)
+
+---
+
+##  Clustering Overview
+
+- **K-Means**: Finds 3 optimal clusters (based on Elbow method)
+- **Agglomerative Clustering**: Hierarchical clustering
+- **DBSCAN**: Density-based clustering to find noise or outliers
+
+### Final Cluster Interpretation:
+
+1. **Cluster 0**: High CO₂ emissions, low yield and low economic impact  
+2. **Cluster 1**: Balanced features with moderate yield and impact  
+3. **Cluster 2**: High yield and highest economic impact (optimal)
+
+---
+
+##  Results Summary
+
+| Model          | R² Score | RMSE   |
+|----------------|----------|--------|
+| Linear         | **Best** | ...    |
+| Random Forest  | ~...     | ...    |
+| LightGBM       | ~...     | ...    |
+| XGBoost        | ~...     | ...    |
+
+> Replace the above with your actual model scores.
+
+---
+
+## Conclusion
+
+The study demonstrates the contribution of environmental and climate factors in accounting for crop productivity. Through increasing applications of machine learning and clustering:
+- We were able to successfully model crop yield
+- Identified high-risk agricultural areas
+- Pointed out significant factors influencing yield (e.g., temperature, irrigation, fertilizer application)
+
+---
+
+## Acknowledgments
+
+Dataset retrieved from Kaggle: *[Climate Change Impact on Agriculture (2024)]*
+Models and plots built using **scikit-learn**, **LightGBM**, **XGBoost**, and **Yellowbrick**.
+
 {
   "cells": [
     {
