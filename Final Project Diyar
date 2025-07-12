@@ -1,3 +1,109 @@
+## Project Overview
+This study develops a hybrid machine learning framework to:
+1️⃣ Predict crop yields under climate change using supervised regression
+2️⃣ Cluster regions into vulnerability-based groups using unsupervised learning
+3️⃣ Identify key environmental drivers of agricultural productivity
+
+Innovation:
+✨ First hybrid framework that combines predictive modeling and geospatial clustering for climate-agriculture analysis
+
+## Dataset
+Source: Kaggle - Climate Change Impact on Agriculture (2024)
+Temporal Coverage: 1990-2024 | Records: 10,000+
+
+Key Variables
+Category\\tFeatures
+Climate\\tTemperature (°C), Precipitation (mm), CO₂ Emissions (MT)
+Agricultural Irrigation (%), Soil Health, Pesticide/Fertilizer Use (kg/ha)
+Economic Crop Yield (MT/ha), Economic Impact (USD Million)
+Geospatial Country, Region, Crop Type, Adaptation Strategies
+⚙️ Methodology
+1. Preprocessing the Data
+✔ Missing Values: Median imputation for climate/agricultural data
+✔ Outliers: Deleted using IQR technique
+✔ Encoding: Label encoding for categorical data
+✔ Scaling: StandardScaler for numerical data
+
+https:///media/image9.png Figure 1: Feature distributions
+
+2. Supervised Learning (Yield Prediction)
+Models Tried:
+
+Random Forest (Best performer: R²=0.63, RMSE=0.62)
+
+LightGBM | XGBoost | Linear Regression
+
+Key Findings
+
+Temperature (30.2%), Precipitation (25.1%), and CO₂ (19.8%) explain 75% of yield variance
+
+Cluster models boosted R² to 0.70
+
+https:///media/imaged.png Figure 2: Stress by country
+
+3. Unsupervised Learning (Vulnerability Clustering)
+Algorithms:
+
+K-Means (Optimal k=3, Silhouette=0.62)
+
+Agglomerative Clustering | DBSCAN
+
+Cluster Profiles:
+
+Cluster	Yield	Economic Impact	Characteristics
+0	Low (2.57 MT/ha)$705M	Vulnerable regions that need drought resilience
+1	Moderate (3.58 MT/ha)$1,337M	Emissions-sensitive areas
+2	High (1.30 MT/ha)$340M	Soil health-dependent systems
+https:///media/imagee.png Figure 3: Feature importance by cluster
+
+???? Key Insights
+Geographic Hotspots
+????️ Top Stress Countries: China (10.36%), India (10.22%), USA (10.16%), Australia (10.02%)
+
+Policy Recommendations
+Cluster 0: Invest in irrigation for drought resilience
+
+Cluster 1: Implement emissions-reduction programs
+
+Cluster 2: Prioritize soil health initiatives
+
+???? Future Enhancements
+Include pest outbreaks and crop diversity information
+
+Add satellite imagery for increased-resolution analysis
+
+Establish real-time monitoring system
+
+????️ Technical Implementation
+Tools Used:
+Python Libraries: Scikit-learn, XGBoost, LightGBM, Yellowbrick
+
+Visualization: Matplotlib, Seaborn, Power BI
+
+Environment: Google Colab
+
+Code Availability:
+GitHub Repository
+
+???? How to Reproduce
+Download dataset from Kaggle
+
+Run Jupyter notebook sequentially:
+EDA → Preprocessing → Modeling → Clustering
+
+Examine results through created visualizations
+
+???? References
+Abebaw, S.E. (2025). Food Science & Nutrition
+
+Zou et al. (2024). Environmental Research Letters
+
+Kaggle Dataset (2024)
+
+???? Impact: The model provides policymakers with evidence-based instruments to formulate climate-resilient farm systems for vulnerable zones.
+
+https:///media/imagef.png Figure 4: Hierarchical clustering structure
+
 {
   "cells": [
     {
