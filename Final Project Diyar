@@ -1,7 +1,6 @@
 ## 📸 Visual Example
 
-![Medical doctor satisfaction](https://nccusa.edu/wp-content/uploads/2024/12/Medical-Administrative-Assistant-Salary-In-California-2025.jpg)
-
+https://images.pexels.com/photos/6216870/pexels-photo-6216870.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260
 
 
 ## Project Overview
@@ -49,11 +48,8 @@ Cluster models boosted R² to 0.70
 
 3. Unsupervised Learning (Vulnerability Clustering)
 Algorithms:
-
 K-Means (Optimal k=3, Silhouette=0.62)
-
 Agglomerative Clustering | DBSCAN
-
 Cluster Profiles:
 
 Cluster	Yield	Economic Impact	Characteristics
@@ -64,7 +60,7 @@ https:///media/imagee.png Figure 3: Feature importance by cluster
 
 ### Key Insights
 Geographic Hotspots
-????️ Top Stress Countries: China (10.36%), India (10.22%), USA (10.16%), Australia (10.02%)
+###Top Stress Countries: China (10.36%), India (10.22%), USA (10.16%), Australia (10.02%)
 
 Policy Recommendations
 Cluster 0: Invest in irrigation for drought resilience
