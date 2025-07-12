@@ -124,6 +124,325 @@ Kaggle Dataset (2024)
 
 ### Impact: The model provides policymakers with evidence-based instruments to formulate climate-resilient farm systems for vulnerable zones.
 
+Appendix 
+
+## Import the data
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from google.colab import files
+import io
+
+# Machine learning models
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from xgboost import XGBRegressor
+import lightgbm as lgb
+
+# Preprocessing and evaluation
+from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Clustering
+from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering
+from sklearn.decomposition import PCA
+from yellowbrick.cluster import KElbowVisualizer
+from scipy.cluster.hierarchy import dendrogram
+from sklearn.metrics import silhouette_score
+
+import warnings
+warnings.filterwarnings('ignore')
+
+## Upload andd missing value
+
+# Upload and read data
+uploaded = files.upload()
+df = pd.read_csv(io.BytesIO(uploaded[next(iter(uploaded))]))
+
+# Initial inspection
+print("Data shape:", df.shape)
+print("\nMissing values:\n", df.isnull().sum())
+print("\nDuplicate rows:", df.duplicated().sum())
+
+# Summary of missing values
+missing_counts = df.isnull().sum()
+missing_counts = missing_counts[missing_counts > 0]
+missing_percentages = (missing_counts / len(df)) * 100
+
+print("\nMissing Values Detected:")
+print(pd.DataFrame({
+    'Missing Count': missing_counts,
+    'Missing %': missing_percentages.round(2)
+}))
+
+
+# EDA
+
+# Boxplot visualization
+numeric_columns = df.select_dtypes(include=np.number).columns.tolist()
+plt.figure(figsize=(15, 20))
+for i, col in enumerate(numeric_columns, 1):
+    plt.subplot(6, 2, i)
+    sns.boxplot(x=df[col])
+    plt.title(f'Boxplot of {col}')
+plt.tight_layout()
+plt.show()
+
+# IQR-based outlier removal
+for col in numeric_columns:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    df = df[~((df[col] < (Q1 - 1.5*IQR)) | (df[col] > (Q3 + 1.5*IQR)))]
+
+# Distribution plots
+plt.figure(figsize=(15, 10))
+for i, col in enumerate(numeric_columns, 1):
+    plt.subplot(3, 4, i)
+    sns.histplot(df[col], kde=True)
+    plt.title(f'Distribution of {col}')
+plt.tight_layout()
+plt.show()
+
+# Correlation analysis
+plt.figure(figsize=(12, 8))
+sns.heatmap(df[numeric_columns].corr(), annot=True, cmap='coolwarm')
+plt.title('Feature Correlation Heatmap')
+plt.show()
+
+# Key relationships
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+sns.boxplot(x='Region', y='Crop_Yield_MT_per_HA', data=df, ax=axes[0])
+axes[0].set_xticklabels(axes[0].get_xticklabels(), rotation=90)
+sns.barplot(x='Region', y='Average_Temperature_C', data=df, estimator='mean', ax=axes[1])
+axes[1].set_xticklabels(axes[1].get_xticklabels(), rotation=90)
+plt.tight_layout()
+plt.show()
+
+# Label encoding
+
+
+label_cols = ['Country', 'Region', 'Crop_Type', 'Adaptation_Strategies']
+for col in label_cols:
+    df[col] = LabelEncoder().fit_transform(df[col])
+
+# target split
+
+
+X = df.drop(columns=['Crop_Yield_MT_per_HA'])
+y = df['Crop_Yield_MT_per_HA']
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Modeling
+
+# Initialize models
+models = {
+    'Linear Regression': LinearRegression(),
+    'Random Forest': RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42),
+    'LightGBM': lgb.LGBMRegressor(learning_rate=0.05, n_estimators=500),
+    'XGBoost': XGBRegressor(learning_rate=0.05, n_estimators=500, max_depth=5)
+}
+
+# Train and evaluate
+results = {}
+for name, model in models.items():
+    model.fit(X_train_scaled, y_train)
+    preds = model.predict(X_test_scaled)
+    results[name] = {
+        'R2': r2_score(y_test, preds),
+        'RMSE': np.sqrt(mean_squared_error(y_test, preds))
+    }
+
+# Display results
+results_df = pd.DataFrame(results).T
+print("\nModel Performance:\n", results_df)
+
+# Identify best model
+
+
+best_model_name = results_df['R2'].idxmax()
+print(f"\nBest Model: {best_model_name}")
+
+# Plot predictions
+best_model = models[best_model_name]
+preds = best_model.predict(X_test_scaled)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(y_test, preds, alpha=0.6)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.title(f'{best_model_name} Predictions vs Actual')
+plt.show()
+
+# Select features and scale
+
+
+cluster_features = ['Crop_Yield_MT_per_HA', 'Economic_Impact_Million_USD']
+X_cluster = df[cluster_features].values
+X_cluster_scaled = StandardScaler().fit_transform(X_cluster)
+
+# unsupervised learning
+
+# Determine optimal k
+visualizer = KElbowVisualizer(KMeans(), k=(1,10))
+visualizer.fit(X_cluster_scaled)
+visualizer.show()
+
+# Fit with optimal k
+kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans_labels = kmeans.fit_predict(X_cluster_scaled)
+
+# Analyze clusters
+df_kmeans = df.copy()
+df_kmeans['Cluster'] = kmeans_labels
+print("\nK-Means Cluster Means:\n", df_kmeans.groupby('Cluster')[cluster_features].mean())
+
+# clustering
+
+# DBSCAN clustering
+dbscan = DBSCAN(eps=0.5, min_samples=5)
+dbscan_labels = dbscan.fit_predict(X_cluster_scaled)
+
+# Analyze results
+print("\nDBSCAN clusters:", len(set(dbscan_labels)))
+print("Noise points:", sum(dbscan_labels == -1))
+
+# Agglomerative clustering
+agglo = AgglomerativeClustering(n_clusters=3)
+agglo_labels = agglo.fit_predict(X_cluster_scaled)
+
+# Dendrogram visualization
+from scipy.cluster.hierarchy import linkage, dendrogram
+plt.figure(figsize=(12, 6))
+dendrogram(linkage(X_cluster_scaled, method='ward'))
+plt.title('Hierarchical Clustering Dendrogram')
+plt.show()
+
+# Evaluate clustering
+
+
+cluster_results = {
+    'K-Means': silhouette_score(X_cluster_scaled, kmeans_labels),
+    'Agglomerative': silhouette_score(X_cluster_scaled, agglo_labels)
+}
+
+print("\nClustering Performance:")
+print(pd.DataFrame.from_dict(cluster_results, orient='index', columns=['Silhouette Score']))
+
+# Visualize K-Means clusters & Final interpretation
+
+
+plt.figure(figsize=(10, 6))
+for cluster in sorted(df_kmeans['Cluster'].unique()):
+    cluster_data = df_kmeans[df_kmeans['Cluster'] == cluster]
+    plt.scatter(cluster_data['Crop_Yield_MT_per_HA'],
+                cluster_data['Economic_Impact_Million_USD'],
+                label=f'Cluster {cluster}')
+plt.xlabel('Crop Yield (MT/HA)')
+plt.ylabel('Economic Impact (Million USD)')
+plt.title('K-Means Clustering Results')
+plt.legend()
+plt.grid()
+plt.show()
+
+
+print("""
+Final Interpretation:
+1. Cluster 0: High CO2 emissions but low yields and economic impact
+2. Cluster 1: Moderate features with balanced yields and impact
+3. Cluster 2: High yields driving maximum economic impact
+""")
+
+# Hyperparameter Tuning using GridSearchCV
+
+from sklearn.model_selection import GridSearchCV
+
+# Define parameter grids for each model
+rf_params = {
+    'n_estimators': [100, 200],
+    'max_depth': [5, 10, None],
+    'min_samples_split': [2, 5]
+}
+
+lgb_params = {
+    'learning_rate': [0.01, 0.05],
+    'n_estimators': [100, 500],
+    'max_depth': [-1, 5, 10]
+}
+
+xgb_params = {
+    'learning_rate': [0.01, 0.05],
+    'n_estimators': [100, 500],
+    'max_depth': [3, 5, 10]
+}
+
+# Initialize GridSearchCV for each model
+rf_grid = GridSearchCV(RandomForestRegressor(random_state=42), rf_params, cv=3, scoring='r2')
+lgb_grid = GridSearchCV(lgb.LGBMRegressor(), lgb_params, cv=3, scoring='r2')
+xgb_grid = GridSearchCV(XGBRegressor(random_state=42), xgb_params, cv=3, scoring='r2')
+
+# Fit the GridSearchCV objects to the scaled training data
+print("Tuning Random Forest...")
+rf_grid.fit(X_train_scaled, y_train)
+print("Tuning LightGBM...")
+lgb_grid.fit(X_train_scaled, y_train)
+print("Tuning XGBoost...")
+xgb_grid.fit(X_train_scaled, y_train)
+
+print("\nRandom Forest Best Params:", rf_grid.best_params_)
+print("LightGBM Best Params:", lgb_grid.best_params_)
+print("XGBoost Best Params:", xgb_grid.best_params_)
+
+## Cluster-Specific Training:
+
+for cluster in df_kmeans['Cluster'].unique():
+    X_cluster = df_kmeans[df_kmeans['Cluster'] == cluster].drop('Crop_Yield_MT_per_HA', axis=1)
+    y_cluster = df_kmeans[df_kmeans['Cluster'] == cluster]['Crop_Yield_MT_per_HA']
+    model = RandomForestRegressor().fit(X_cluster, y_cluster)
+    print(f"Cluster {cluster}: R² = {model.score(X_cluster, y_cluster):.2f}")
+
+## Feature Importance Comparison
+
+cluster_models = {}
+for cluster in df_kmeans['Cluster'].unique():
+    X_cluster = df_kmeans[df_kmeans['Cluster'] == cluster].drop('Crop_Yield_MT_per_HA', axis=1)
+    y_cluster = df_kmeans[df_kmeans['Cluster'] == cluster]['Crop_Yield_MT_per_HA']
+    model = RandomForestRegressor().fit(X_cluster, y_cluster)
+    cluster_models[cluster] = model
+
+importances = pd.DataFrame({
+    f'Cluster {cluster}': cluster_models[cluster].feature_importances_ for cluster in cluster_models
+}, index=X_cluster.columns)
+
+print("\nFeature Importances per Cluster:\n", importances)
+
+# Transpose importances DataFrame so features are on x-axis
+importances_T = importances.T
+
+# Plotting
+plt.figure(figsize=(14, 6))
+importances_T.plot(kind='bar', figsize=(14, 6))
+
+plt.title('Feature Importance by Cluster')
+plt.ylabel('Importance Score')
+plt.xlabel('Cluster')
+plt.xticks(rotation=45)
+plt.legend(title='Features', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.grid(True)
+plt.show()
 
 
 {
